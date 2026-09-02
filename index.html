@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.webmanifest">
+<title>My Progress OS</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--good:#16803c;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:720px;margin:auto;padding:14px 14px calc(88px + env(safe-area-inset-bottom))}
+.top{padding:8px 2px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}h1{font-size:25px;margin:0}.sub{color:var(--muted);font-size:13px;margin-top:3px}
+nav{position:fixed;z-index:10;bottom:0;left:0;right:0;padding-bottom:env(safe-area-inset-bottom);background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;box-shadow:0 -3px 12px #0000000a}
+nav button{flex:1;max-width:180px;border:0;background:none;padding:11px 5px 9px;color:var(--muted);font-size:11px}nav button b{display:block;font-size:19px;margin-bottom:2px}nav button.active{color:var(--text)}
+.page{display:none}.page.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:12px}.hero{background:var(--accent);color:white;border-radius:19px;padding:18px;margin-bottom:12px}.hero .muted{color:#d1d5db}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{font-size:24px;font-weight:750}.label{font-size:12px;color:var(--muted)}.hero .label{color:#d1d5db}
+.section{font-weight:750;font-size:18px;margin:18px 2px 9px}.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field label{display:block;color:var(--muted);font-size:12px;margin:0 0 5px}.field input,.field textarea{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}.field textarea{min-height:75px;resize:vertical}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.toggle{border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 4px;text-align:center}.toggle input{display:block;margin:0 auto 6px;width:20px;height:20px}
+.primary{width:100%;border:0;border-radius:12px;padding:13px;background:var(--accent);color:white;font-weight:700;font-size:15px;margin-top:12px}.secondary{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px}
+.bar{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.good{color:var(--good)}.bad{color:var(--bad)}.muted{color:var(--muted);font-size:13px}.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.list{display:flex;flex-direction:column}.item{padding:12px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}
+.status{font-size:12px;color:var(--muted);margin-top:7px}.status.online{color:var(--good)}
+@media(min-width:650px){nav{position:static;border:0;box-shadow:none;background:transparent;margin-bottom:10px}nav button{border-radius:10px;font-size:13px}nav button b{display:inline;font-size:16px;margin-right:4px}.app{padding-bottom:20px}.form{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div><h1>My Progress OS</h1><div class="sub">One minute a day. See the bigger picture.</div></div><button class="secondary" onclick="backup()">Backup</button></header>
+<nav>
+<button class="active" onclick="page('home',this)"><b>⌂</b>Today</button>
+<button onclick="page('progress',this)"><b>↗</b>Progress</button>
+<button onclick="page('study',this)"><b>📚</b>CPA</button>
+<button onclick="page('settings',this)"><b>⚙</b>More</button>
+</nav>
+
+<main id="home" class="page active">
+<div class="hero"><div class="label">TODAY</div><div style="font-size:23px;font-weight:750;margin:3px 0">Keep the chain alive.</div><div class="muted">Log only what matters. The app handles the trends.</div></div>
+<div class="section">Daily check-in</div>
+<div class="card">
+<div class="form">
+<div class="field"><label>Date</label><input id="date" type="date"></div>
+<div class="field"><label>Weight (kg)</label><input id="weight" inputmode="decimal" type="number" step=".1" placeholder="92.0"></div>
+<div class="field"><label>Sleep (hours)</label><input id="sleep" inputmode="decimal" type="number" step=".1" placeholder="7.5"></div>
+<div class="field"><label>Steps</label><input id="steps" inputmode="numeric" type="number" placeholder="10000"></div>
+<div class="field"><label>Calories</label><input id="calories" inputmode="numeric" type="number" placeholder="1600"></div>
+<div class="field"><label>Protein (g)</label><input id="protein" inputmode="numeric" type="number" placeholder="120"></div>
+<div class="field"><label>CPA (hours)</label><input id="cpa" inputmode="decimal" type="number" step=".1" placeholder="2"></div>
+<div class="field"><label>Energy 1–5</label><input id="energy" inputmode="numeric" type="number" min="1" max="5"></div>
+<div class="field"><label>Mood 1–5</label><input id="mood" inputmode="numeric" type="number" min="1" max="5"></div>
+</div>
+<div class="section">Done today?</div>
+<div class="quick">
+<label class="toggle"><input id="gym" type="checkbox">🏋️ Gym</label>
+<label class="toggle"><input id="mt" type="checkbox">🥊 Muay Thai</label>
+<label class="toggle"><input id="skin" type="checkbox">🧴 Skin</label>
+<label class="toggle"><input id="hair" type="checkbox">💇 Hair</label>
+</div>
+<div class="field" style="margin-top:11px"><label>Notes</label><textarea id="notes" placeholder="Optional — only if something matters."></textarea></div>
+<button class="primary" onclick="save()">Save today</button>
+<div class="status" id="saveStatus"></div>
+</div>
+<div class="section">At a glance</div>
+<div class="grid">
+<div class="card"><div class="label">Weight</div><div class="metric" id="qWeight">—</div></div>
+<div class="card"><div class="label">CPA</div><div class="metric" id="qCpa">—</div></div>
+<div class="card"><div class="label">Steps</div><div class="metric" id="qSteps">—</div></div>
+<div class="card"><div class="label">Sleep</div><div class="metric" id="qSleep">—</div></div>
+</div>
+</main>
+
+<main id="progress" class="page">
+<div class="section">Your trend</div>
+<div class="grid">
+<div class="card"><div class="label">7-day avg weight</div><div class="metric" id="avgW">—</div></div>
+<div class="card"><div class="label">Recent change</div><div class="metric" id="chgW">—</div></div>
+<div class="card"><div class="label">CPA this week</div><div class="metric" id="avgC">—</div></div>
+<div class="card"><div class="label">Sleep average</div><div class="metric" id="avgS">—</div></div>
+</div>
+<div class="section">Weekly targets</div><div class="card">
+<div class="row"><span>CPA</span><b id="pc"></b></div><div class="bar"><i id="bc"></i></div>
+<div class="row" style="margin-top:14px"><span>Gym</span><b id="pg"></b></div><div class="bar"><i id="bg"></i></div>
+<div class="row" style="margin-top:14px"><span>Muay Thai</span><b id="pm"></b></div><div class="bar"><i id="bm"></i></div>
+<div class="row" style="margin-top:14px"><span>Average steps</span><b id="ps"></b></div><div class="bar"><i id="bs"></i></div>
+</div>
+<div class="section">Weekly readout</div><div class="card" id="readout">Start logging and I'll build a useful trend.</div>
+</main>
+
+<main id="study" class="page">
+<div class="section">CPA dashboard</div>
+<div class="hero"><div class="label">TARGET</div><div style="font-size:23px;font-weight:750">All 4 sections in 2027</div><div class="muted">Your weekly target: 12 focused hours.</div></div>
+<div class="card"><div class="row"><b>This week</b><b id="studyTotal">0 h</b></div><div class="bar" style="margin-top:10px"><i id="studyBar"></i></div><p class="muted">Log study in the daily check-in. Section milestones can be added after cloud sync.</p></div>
+</main>
+
+<main id="settings" class="page">
+<div class="section">Data & preferences</div>
+<div class="card">
+<p><b>Offline-first prototype</b></p><p class="muted">Your entries are stored on this device for now. The next build will add cloud sync so the same history is available across devices.</p>
+<button class="secondary" onclick="backup()">Export backup</button>
+<button class="secondary" style="margin-left:6px" onclick="restore()">Restore backup</button>
+<input id="restoreFile" type="file" accept=".json" hidden onchange="doRestore(event)">
+</div>
+<div class="card"><b>Build roadmap</b><div class="list">
+<div class="item">☑️ Mobile-first daily tracker</div><div class="item">☑️ Offline storage + backup</div><div class="item">☁️ Google Sheets cloud sync</div><div class="item">📈 Weight/waist charts</div><div class="item">🎯 CPA section milestones</div><div class="item">🧠 Smarter weekly analysis</div><div class="item">🔔 Optional reminders</div>
+</div></div>
+</main>
+</div>
+<script>
+const KEY='progressOS_v3';let data=JSON.parse(localStorage.getItem(KEY)||'[]');const $=id=>document.getElementById(id);
+$('date').value=new Date().toISOString().slice(0,10);
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+function page(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render();}
+function num(id){return $(id).value===''?null:+$(id).value}
+function save(){let v={date:$('date').value,weight:num('weight'),sleep:num('sleep'),steps:num('steps'),calories:num('calories'),protein:num('protein'),cpa:num('cpa')||0,energy:num('energy'),mood:num('mood'),gym:$('gym').checked,mt:$('mt').checked,skin:$('skin').checked,hair:$('hair').checked,notes:$('notes').value};data=data.filter(x=>x.date!==v.date);data.push(v);data.sort((a,b)=>a.date.localeCompare(b.date));localStorage.setItem(KEY,JSON.stringify(data));$('saveStatus').textContent='Saved on this device ✓';$('saveStatus').className='status online';render();}
+function week(){let n=new Date();n.setHours(23,59,59,999);let cut=new Date(n);cut.setDate(cut.getDate()-6);cut.setHours(0,0,0,0);return data.filter(x=>{let d=new Date(x.date);return d>=cut&&d<=n})}
+function avg(a,k){let x=a.map(v=>v[k]).filter(v=>v!=null);return x.length?x.reduce((s,v)=>s+v,0)/x.length:null}
+function prog(label,bar,val,target){$(label).textContent=(val%1?val.toFixed(1):val)+' / '+target;$(bar).style.width=Math.min(100,val/target*100)+'%'}
+function render(){let t=data.find(x=>x.date===$('date').value)||data.find(x=>x.date===new Date().toISOString().slice(0,10));if(t){$('qWeight').textContent=t.weight??'—';$('qCpa').textContent=t.cpa+'h';$('qSteps').textContent=t.steps??'—';$('qSleep').textContent=t.sleep?t.sleep+'h':'—'}
+let a=week(),aw=avg(a,'weight'),sleep=avg(a,'sleep'),c=a.reduce((s,x)=>s+x.cpa,0),g=a.filter(x=>x.gym).length,m=a.filter(x=>x.mt).length,st=avg(a,'steps')||0;
+$('avgW').textContent=aw?aw.toFixed(1)+' kg':'—';let ws=a.filter(x=>x.weight!=null),delta=ws.length>1?ws.at(-1).weight-ws[0].weight:null;$('chgW').textContent=delta==null?'—':(delta>0?'+':'')+delta.toFixed(1)+' kg';$('chgW').className='metric '+(delta<0?'good':delta>0?'bad':'');$('avgC').textContent=c.toFixed(1)+' h';$('avgS').textContent=sleep?sleep.toFixed(1)+' h':'—';
+prog('pc','bc',c,12);prog('pg','bg',g,3);prog('pm','bm',m,1);prog('ps','bs',st,10000);$('studyTotal').textContent=c.toFixed(1)+' h';$('studyBar').style.width=Math.min(100,c/12*100)+'%';
+if(a.length<3)$('readout').textContent='Keep logging. A few more days will make the trends meaningful.';
+else $('readout').textContent=(c>=12?'CPA target met. ':'CPA is below the 12 h target. ')+(g>=3?'Gym target met. ':'Gym is below 3 sessions. ')+(sleep>=7?'Sleep average is solid.':'Sleep is averaging under 7 h.');}
+function backup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-progress-os-backup.json';a.click()}
+function restore(){$('restoreFile').click()}function doRestore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);localStorage.setItem(KEY,JSON.stringify(data));render();alert('Restored ✓')}catch{alert('Invalid backup file')}};r.readAsText(e.target.files[0])}
+render();
+</script>
+</body></html>
